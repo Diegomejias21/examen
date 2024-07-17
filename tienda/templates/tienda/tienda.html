@@ -1,0 +1,111 @@
+{% extends "ProyectoWebApp/base.html" %}
+{% load static %}
+
+{% block contenido %}
+<div class="container">
+
+<div style="float:right; margin-top: 10px;">
+
+    <!-- carrito -->
+    {% if request.user.is_authenticated %}
+        {% include "carro/widget.html" %}
+    {% else %}
+        {% if messages %}
+            {% for mensaje in messages %}
+            <br><br>
+            <center>
+                <span class="alert alert-primary" role="alert"> 
+                    {{mensaje}}. <a href="{% url 'logeo' %}">Login</a>
+                </span>
+            </center>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+
+</div>
+<div class="row"> <!-- my-2 -->
+
+{% for producto in productos %}
+
+    <div class="col-md-4">
+
+            <div class="card custom-card">
+                  
+                <img src="{{producto.imagen.url}}" class="card-img-top custom-img" alt="{{ producto.nombre }}">
+ 
+                  
+                  <div class="card-body">
+                        <h6 class="card-tittle text-center"><strong>{{producto.nombre}}</strong></h6> 
+                        <p class="card-text text-right">{{producto.precio}}&nbsp;CLP</p>
+                  </div> <!-- card-body cerrada-->
+
+                  <div class="card-footer text-center">
+                        {% if request.user.is_authenticated %}
+
+                        <a href="{% url 'carro:agregar' producto.id %}" class="btn btn-success custom-btn">Agregar al carrito</a>
+                        
+                        {% else %}
+                        
+                        <a href="#" class="btn btn-success custom-btn">Regístrate para agregar</a>
+
+
+                        {% endif %}
+                  </div>
+
+            </div> <!-- card cerrada-->
+    </div>
+    
+{% endfor %}
+</div>     <!-- row cerrada-->
+   
+</div> <!-- conteiner cerrada-->
+
+<style>
+    /* Estilos adicionales */
+    .custom-card {
+        width: 100%;
+        margin: 10px 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+        padding: 15px; /* Espacio interno */
+    }
+
+    .custom-card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .custom-img {
+        height: 200px;
+        object-fit: cover;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .custom-btn {
+        background-color: #0D2B49;
+        border-color: #0D2B49;
+        transition: background-color 0.3s ease, border-color 0.3s ease; /* Efecto de transición */
+    }
+
+    .custom-btn:hover {
+        background-color: #1E5B99; /* Cambio de color al pasar el cursor */
+        border-color: #1E5B99;
+    }
+
+    .card-body {
+        text-align: center; /* Alinear texto al centro */
+        margin-top: 10px; /* Espacio arriba del texto */
+    }
+</style>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
